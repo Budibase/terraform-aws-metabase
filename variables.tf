@@ -92,12 +92,27 @@ variable "java_timezone" {
   default     = "US/Pacific"
 }
 
-variable "db_cluster_parameter_group_name" {
-  description = "(Optional) https://www.terraform.io/docs/providers/aws/r/rds_cluster.html#db_cluster_parameter_group_name"
-  default     = ""
+variable "db_dbname" {
+  description = "(Optional) https://www.metabase.com/docs/latest/operations-guide/environment-variables.html#mb_db_dbname"
+  default     = "metabase"
 }
 
-variable "auto_pause" {
-  description = "(Optional) https://www.terraform.io/docs/providers/aws/r/rds_cluster.html#auto_pause"
-  default     = false
+variable "db_host" {
+  description = "(Optional) https://www.metabase.com/docs/latest/operations-guide/environment-variables.html#mb_db_host"
+  default     = "metabase-db"
+}
+
+variable "db_port" {
+  description = "(Optional) https://www.metabase.com/docs/latest/operations-guide/environment-variables.html#mb_db_port"
+  default     = "5432"
+}
+
+variable "db_user" {
+  description = "(Optional) https://www.metabase.com/docs/latest/operations-guide/environment-variables.html#mb_db_user"
+  default     = "metabase"
+}
+
+variable "db_pass" {
+  description = "(Optional) https://www.metabase.com/docs/latest/operations-guide/environment-variables.html#mb_db_pass"
+  default     = "metabase"
 }
