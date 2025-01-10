@@ -89,19 +89,19 @@ locals {
     },
     {
       name  = "MB_DB_DBNAME"
-      value = aws_rds_cluster.this.database_name
+      value = var.db_name
     },
     {
       name  = "MB_DB_PORT"
-      value = tostring(aws_rds_cluster.this.port)
+      value = var.db_port
     },
     {
       name  = "MB_DB_USER"
-      value = aws_rds_cluster.this.master_username
+      value = var.db_user
     },
     {
       name  = "MB_DB_HOST"
-      value = aws_rds_cluster.this.endpoint
+      value = var.db_host
     },
   ]
 }

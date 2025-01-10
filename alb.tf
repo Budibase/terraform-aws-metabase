@@ -61,7 +61,7 @@ resource "aws_lb_listener" "https" {
 resource "aws_s3_bucket" "this" {
   bucket_prefix = "mb-"
   acl           = "private"
-  force_destroy = ! var.protection
+  force_destroy = !var.protection
   tags          = var.tags
 
   server_side_encryption_configuration {
