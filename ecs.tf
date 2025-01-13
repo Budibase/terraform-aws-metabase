@@ -154,7 +154,7 @@ resource "aws_lb_target_group" "this" {
   tags        = var.tags
 
   health_check {
-    path = "/"
+    path = "/api/health"
   }
 }
 
