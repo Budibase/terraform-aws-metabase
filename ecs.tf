@@ -67,7 +67,7 @@ locals {
       secrets = [
         {
           name      = "MB_DB_PASS"
-          valueFrom = aws_ssm_parameter.this.name
+          valueFrom = var.db_pass
         },
       ]
 
