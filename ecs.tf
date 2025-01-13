@@ -155,6 +155,8 @@ resource "aws_lb_target_group" "this" {
 
   health_check {
     path = "/api/health"
+    timeout = 10
+    interval = 120
   }
 }
 
