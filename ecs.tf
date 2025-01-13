@@ -100,7 +100,7 @@ locals {
     },
     {
       name  = "MB_DB_DBNAME"
-      value = var.db_name
+      value = var.db_dbname
     },
     {
       name  = "MB_DB_PORT"
@@ -213,16 +213,6 @@ resource "aws_security_group_rule" "ecs_egress_internet" {
   protocol          = "-1"
   security_group_id = aws_security_group.ecs.id
   cidr_blocks       = ["0.0.0.0/0"]
-}
-
-resource "aws_security_group_rule" "ecs_egress_rds" {
-  description              = "ALB"
-  type                     = "egress"
-  from_port                = 0
-  to_port                  = 0
-  protocol                 = "-1"
-  security_group_id        = aws_security_group.ecs.id
-  source_security_group_id = aws_security_group.rds.id
 }
 
 resource "aws_security_group_rule" "ecs_ingress_alb" {
