@@ -89,7 +89,7 @@ locals {
     },
     {
       name  = "MB_DB_TYPE"
-      value = "mysql"
+      value = "postgres"
     },
     {
       name  = "MB_DB_DBNAME"
