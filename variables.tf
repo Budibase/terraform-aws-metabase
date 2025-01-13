@@ -22,7 +22,7 @@ variable "vpc_id" {
   description = "(Required) https://www.terraform.io/docs/providers/aws/r/security_group.html#vpc_id"
 }
 
-variable "db_dbbname" {
+variable "db_dbname" {
   description = "(Required) https://www.metabase.com/docs/latest/operations-guide/environment-variables.html#mb_db_dbname"
   default     = "metabase"
 }
