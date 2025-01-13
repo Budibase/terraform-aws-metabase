@@ -70,7 +70,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
 resource "aws_s3_bucket_lifecycle_configuration" "this" {
   bucket = aws_s3_bucket.this.bucket
   rule {
-    id     = "log"
+    id = "log"
 
     status = "Enabled"
 
