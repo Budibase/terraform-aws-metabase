@@ -64,13 +64,6 @@ locals {
       essential   = true
       environment = concat(local.environment, var.environment)
 
-      secrets = [
-        {
-          name      = "MB_DB_PASS"
-          valueFrom = var.db_pass
-        },
-      ]
-
       portMappings = [
         {
           containerPort = 3000
@@ -114,6 +107,10 @@ locals {
       name  = "MB_DB_HOST"
       value = var.db_host
     },
+    {
+      name  = "MB_DB_PASS"
+      value = var.db_pass
+    }
   ]
 }
 
