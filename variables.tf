@@ -22,6 +22,31 @@ variable "vpc_id" {
   description = "(Required) https://www.terraform.io/docs/providers/aws/r/security_group.html#vpc_id"
 }
 
+variable "db_dbname" {
+  description = "(Required) https://www.metabase.com/docs/latest/operations-guide/environment-variables.html#mb_db_dbname"
+  default     = "metabase"
+}
+
+variable "db_host" {
+  description = "(Required) https://www.metabase.com/docs/latest/operations-guide/environment-variables.html#mb_db_host"
+  default     = "metabase-db"
+}
+
+variable "db_port" {
+  description = "(Required) https://www.metabase.com/docs/latest/operations-guide/environment-variables.html#mb_db_port"
+  default     = "5432"
+}
+
+variable "db_user" {
+  description = "(Required) https://www.metabase.com/docs/latest/operations-guide/environment-variables.html#mb_db_user"
+  default     = "metabase"
+}
+
+variable "db_pass" {
+  description = "(Required) https://www.metabase.com/docs/latest/operations-guide/environment-variables.html#mb_db_pass"
+  default     = "metabase"
+}
+
 variable "id" {
   description = "(Optional) Unique identifier for naming resources"
   default     = "metabase"
@@ -90,29 +115,4 @@ variable "environment" {
 variable "java_timezone" {
   description = "(Optional) https://www.metabase.com/docs/v0.21.1/operations-guide/running-metabase-on-docker.html#setting-the-java-timezone"
   default     = "US/Pacific"
-}
-
-variable "db_dbname" {
-  description = "(Optional) https://www.metabase.com/docs/latest/operations-guide/environment-variables.html#mb_db_dbname"
-  default     = "metabase"
-}
-
-variable "db_host" {
-  description = "(Optional) https://www.metabase.com/docs/latest/operations-guide/environment-variables.html#mb_db_host"
-  default     = "metabase-db"
-}
-
-variable "db_port" {
-  description = "(Optional) https://www.metabase.com/docs/latest/operations-guide/environment-variables.html#mb_db_port"
-  default     = "5432"
-}
-
-variable "db_user" {
-  description = "(Optional) https://www.metabase.com/docs/latest/operations-guide/environment-variables.html#mb_db_user"
-  default     = "metabase"
-}
-
-variable "db_pass" {
-  description = "(Optional) https://www.metabase.com/docs/latest/operations-guide/environment-variables.html#mb_db_pass"
-  default     = "metabase"
 }
