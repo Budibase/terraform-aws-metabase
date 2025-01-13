@@ -96,7 +96,6 @@ resource "aws_s3_bucket_acl" "this" {
 
 resource "aws_s3_bucket" "this" {
   bucket_prefix = "mb-"
-  acl           = "private"
   force_destroy = !var.protection
   tags          = var.tags
 
