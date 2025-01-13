@@ -67,12 +67,8 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
   }
 }
 
-resource "aws_s3_bucket" "this" {
-  bucket_prefix = "mb-"
-  acl           = "private"
-  force_destroy = !var.protection
-  tags          = var.tags
-
+resource "aws_s3_bucket_lifecycle_configuration" {
+  bucket = aws_s3_bucket.this.bucket
   lifecycle_rule {
     enabled = true
 
@@ -80,6 +76,13 @@ resource "aws_s3_bucket" "this" {
       days = var.log_retention
     }
   }
+}
+
+resource "aws_s3_bucket" "this" {
+  bucket_prefix = "mb-"
+  acl           = "private"
+  force_destroy = !var.protection
+  tags          = var.tags
 
   lifecycle {
     create_before_destroy = true
