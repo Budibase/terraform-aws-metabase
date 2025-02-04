@@ -1,3 +1,13 @@
+variable "create_cluster" {
+  description = "(Optional) Create an ECS cluster"
+  default     = true
+}
+
+variable "cluster_name" {
+  description = "(Optional) Name of the ECS cluster"
+  default     = "metabase"
+}
+
 variable "private_subnet_ids" {
   description = "(Required) IDs of the subnets to which the services and database will be deployed"
 }

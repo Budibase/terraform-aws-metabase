@@ -1,6 +1,7 @@
 resource "aws_ecs_cluster" "this" {
-  name = var.id
-  tags = var.tags
+  count = var.create_cluster ? 1 : 0
+  name  = var.cluster_name
+  tags  = var.tags
 
   setting {
     name  = "containerInsights"
@@ -9,7 +10,7 @@ resource "aws_ecs_cluster" "this" {
 }
 
 resource "aws_ecs_cluster_capacity_providers" "this" {
-  cluster_name = aws_ecs_cluster.this.name
+  cluster_name = var.cluster_name
 
   capacity_providers = ["FARGATE"]
 
@@ -33,7 +34,7 @@ resource "aws_ecs_task_definition" "this" {
 
 resource "aws_ecs_service" "this" {
   name                              = var.id
-  cluster                           = aws_ecs_cluster.this.id
+  cluster                           = data.aws_ecs_cluster.this[0].id
   task_definition                   = aws_ecs_task_definition.this.arn
   desired_count                     = var.desired_count
   launch_type                       = "FARGATE"
@@ -154,8 +155,8 @@ resource "aws_lb_target_group" "this" {
   tags        = var.tags
 
   health_check {
-    path = "/api/health"
-    timeout = 10
+    path     = "/api/health"
+    timeout  = 10
     interval = 120
   }
 }
