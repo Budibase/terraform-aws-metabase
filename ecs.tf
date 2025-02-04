@@ -10,7 +10,7 @@ resource "aws_ecs_cluster" "this" {
 }
 
 resource "aws_ecs_cluster_capacity_providers" "this" {
-  cluster_name = data.aws_ecs_cluster.this[0].id
+  cluster_name = var.cluster_name
 
   capacity_providers = ["FARGATE"]
 
