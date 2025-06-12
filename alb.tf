@@ -2,12 +2,12 @@ resource "aws_lb" "this" {
   count = var.create_alb ? 1 : 0
 
   name_prefix     = "mb-"
-  security_groups = ["${aws_security_group.alb.id}"]
+  security_groups = [aws_security_group.alb[0].id]
   subnets         = tolist(var.public_subnet_ids)
   tags            = var.tags
 
   access_logs {
-    bucket  = aws_s3_bucket.this.bucket
+    bucket  = aws_s3_bucket.this[0].bucket
     enabled = true
   }
 
@@ -17,7 +17,7 @@ resource "aws_lb" "this" {
 }
 
 resource "aws_lb_listener" "http" {
-  count = var.create_alb ? 1 : 0
+  count = var.create_alb || var.alb_arn != "" ? 1 : 0
 
   load_balancer_arn = var.alb_arn != "" ? var.alb_arn : aws_lb.this[0].arn
   port              = "80"
@@ -39,7 +39,7 @@ resource "aws_lb_listener" "http" {
 }
 
 resource "aws_lb_listener" "https" {
-  count = var.create_alb ? 1 : 0
+  count = var.create_alb || var.alb_arn != "" ? 1 : 0
 
   load_balancer_arn = var.alb_arn != "" ? var.alb_arn : aws_lb.this[0].arn
   port              = "443"
@@ -65,7 +65,7 @@ resource "aws_lb_listener" "https" {
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
   count = var.create_alb ? 1 : 0
 
-  bucket = aws_s3_bucket.this.bucket
+  bucket = aws_s3_bucket.this[0].bucket
   rule {
     apply_server_side_encryption_by_default {
       sse_algorithm = "AES256"
@@ -76,7 +76,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
 resource "aws_s3_bucket_lifecycle_configuration" "this" {
   count = var.create_alb ? 1 : 0
 
-  bucket = aws_s3_bucket.this.bucket
+  bucket = aws_s3_bucket.this[0].bucket
   rule {
     id = "log"
 
@@ -89,7 +89,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
 }
 
 resource "aws_s3_bucket_ownership_controls" "this" {
-  bucket = aws_s3_bucket.this.id
+  count = var.create_alb ? 1 : 0
+
+  bucket = aws_s3_bucket.this[0].id
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
@@ -100,7 +102,7 @@ resource "aws_s3_bucket_acl" "this" {
 
   depends_on = [aws_s3_bucket_ownership_controls.this]
 
-  bucket = aws_s3_bucket.this.id
+  bucket = aws_s3_bucket.this[0].id
   acl    = "private"
 }
 
@@ -119,16 +121,18 @@ resource "aws_s3_bucket" "this" {
 resource "aws_s3_bucket_policy" "this" {
   count = var.create_alb ? 1 : 0
 
-  bucket = aws_s3_bucket.this.id
-  policy = data.aws_iam_policy_document.s3.json
+  bucket = aws_s3_bucket.this[0].id
+  policy = data.aws_iam_policy_document.s3[0].json
 }
 
 data "aws_elb_service_account" "this" {}
 
 data "aws_iam_policy_document" "s3" {
+  count = var.create_alb ? 1 : 0
+
   statement {
     actions   = ["s3:PutObject"]
-    resources = ["${aws_s3_bucket.this.arn}/*"]
+    resources = ["${aws_s3_bucket.this[0].arn}/*"]
 
     principals {
       type        = "AWS"
@@ -138,7 +142,7 @@ data "aws_iam_policy_document" "s3" {
 }
 
 resource "aws_security_group" "alb" {
-  count = var.create_alb ? 1 : 0
+  count = var.create_alb || var.alb_arn != "" ? 1 : 0
 
   name_prefix = "${var.id}-alb-"
   vpc_id      = var.vpc_id
@@ -150,7 +154,7 @@ resource "aws_security_group" "alb" {
 }
 
 resource "aws_security_group_rule" "alb_egress_ecs" {
-  count = var.create_alb ? 1 : 0
+  count = var.create_alb || var.alb_arn != "" ? 1 : 0
 
   description              = "ECS"
   type                     = "egress"
@@ -162,7 +166,7 @@ resource "aws_security_group_rule" "alb_egress_ecs" {
 }
 
 resource "aws_security_group_rule" "alb_ingress_http" {
-  count = var.create_alb ? 1 : 0
+  count = var.create_alb || var.alb_arn != "" ? 1 : 0
 
   description       = "Internet"
   type              = "ingress"
@@ -174,7 +178,7 @@ resource "aws_security_group_rule" "alb_ingress_http" {
 }
 
 resource "aws_security_group_rule" "alb_ingress_https" {
-  count = var.create_alb ? 1 : 0
+  count = var.create_alb || var.alb_arn != "" ? 1 : 0
 
   description       = "Internet"
   type              = "ingress"

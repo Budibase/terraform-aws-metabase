@@ -168,7 +168,7 @@ resource "aws_lb_target_group" "this" {
 }
 
 resource "aws_lb_listener_rule" "this" {
-  listener_arn = aws_lb_listener.https.arn
+  listener_arn = aws_lb_listener.https[0].arn
 
   action {
     type             = "forward"
@@ -228,5 +228,5 @@ resource "aws_security_group_rule" "ecs_ingress_alb" {
   to_port                  = 0
   protocol                 = "-1"
   security_group_id        = aws_security_group.ecs.id
-  source_security_group_id = aws_security_group.alb.id
+  source_security_group_id = aws_security_group.alb[0].id
 }

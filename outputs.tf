@@ -1,6 +1,6 @@
 output "listener_arn" {
   description = "https://www.terraform.io/docs/providers/aws/r/lb_listener.html#arn"
-  value       = aws_lb_listener.https.arn
+  value       = aws_lb_listener.https[0].arn
 }
 
 output "target_group_arn" {
