@@ -8,12 +8,12 @@ variable "cluster_name" {
   default     = "metabase"
 }
 
-variable "create_alb" { 
+variable "create_alb" {
   description = "(Optional) Create an ALB"
   default     = true
 }
 
-variable "existing_alb_arn" {
+variable "alb_arn" {
   description = "(Optional) ARN of an existing ALB to use"
   default     = ""
 }
