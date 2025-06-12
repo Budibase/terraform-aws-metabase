@@ -18,6 +18,16 @@ variable "alb_arn" {
   default     = ""
 }
 
+variable "alb_dns_name" {
+  description = "(Optional) DNS name of an existing ALB to use"
+  default     = ""
+}
+
+variable "alb_zone_id" {
+  description = "(Optional) Zone ID of an existing ALB to use"
+  default     = ""
+}
+
 variable "private_subnet_ids" {
   description = "(Required) IDs of the subnets to which the services and database will be deployed"
 }
