@@ -17,8 +17,7 @@ resource "aws_lb" "this" {
 }
 
 resource "aws_lb_listener" "http" {
-  load_balancer_arn = var.existing_alb_arn != "" ? var.existing_alb_arn : aws_lb.this[0].arn
-  depends_on        = var.create_alb ? [aws_lb.this[0]] : [] # https://github.com/terraform-providers/terraform-provider-aws/issues/9976
+  load_balancer_arn = var.alb_arn != "" ? var.alb_arn : aws_lb.this[0].arn
   port              = "80"
   protocol          = "HTTP"
 
@@ -38,8 +37,7 @@ resource "aws_lb_listener" "http" {
 }
 
 resource "aws_lb_listener" "https" {
-  load_balancer_arn = var.existing_alb_arn != "" ? var.existing_alb_arn : aws_lb.this[0].arn
-  depends_on        = [aws_lb.this] # https://github.com/terraform-providers/terraform-provider-aws/issues/9976
+  load_balancer_arn = var.alb_arn != "" ? var.alb_arn : aws_lb.this[0].arn
   port              = "443"
   protocol          = "HTTPS"
   ssl_policy        = var.ssl_policy
