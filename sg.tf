@@ -66,5 +66,5 @@ resource "aws_security_group_rule" "ecs_ingress_alb" {
   to_port                  = 0
   protocol                 = "-1"
   security_group_id        = aws_security_group.ecs.id
-  source_security_group_id = aws_security_group.alb.id
+  cidr_blocks              = ["0.0.0.0/0"]
 }
