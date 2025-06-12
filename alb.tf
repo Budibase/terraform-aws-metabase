@@ -6,11 +6,6 @@ resource "aws_lb" "this" {
   subnets         = tolist(var.public_subnet_ids)
   tags            = var.tags
 
-  access_logs {
-    bucket  = aws_s3_bucket.this.bucket
-    enabled = true
-  }
-
   lifecycle {
     create_before_destroy = true
   }
