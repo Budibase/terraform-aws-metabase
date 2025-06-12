@@ -17,6 +17,8 @@ resource "aws_lb" "this" {
 }
 
 resource "aws_lb_listener" "http" {
+  count = var.create_alb ? 1 : 0
+
   load_balancer_arn = var.alb_arn != "" ? var.alb_arn : aws_lb.this[0].arn
   port              = "80"
   protocol          = "HTTP"
@@ -37,6 +39,8 @@ resource "aws_lb_listener" "http" {
 }
 
 resource "aws_lb_listener" "https" {
+  count = var.create_alb ? 1 : 0
+
   load_balancer_arn = var.alb_arn != "" ? var.alb_arn : aws_lb.this[0].arn
   port              = "443"
   protocol          = "HTTPS"
@@ -59,6 +63,8 @@ resource "aws_lb_listener" "https" {
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
+  count = var.create_alb ? 1 : 0
+
   bucket = aws_s3_bucket.this.bucket
   rule {
     apply_server_side_encryption_by_default {
@@ -68,6 +74,8 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "this" {
+  count = var.create_alb ? 1 : 0
+
   bucket = aws_s3_bucket.this.bucket
   rule {
     id = "log"
@@ -88,6 +96,8 @@ resource "aws_s3_bucket_ownership_controls" "this" {
 }
 
 resource "aws_s3_bucket_acl" "this" {
+  count = var.create_alb ? 1 : 0
+
   depends_on = [aws_s3_bucket_ownership_controls.this]
 
   bucket = aws_s3_bucket.this.id
@@ -95,6 +105,8 @@ resource "aws_s3_bucket_acl" "this" {
 }
 
 resource "aws_s3_bucket" "this" {
+  count = var.create_alb ? 1 : 0
+
   bucket_prefix = "mb-"
   force_destroy = !var.protection
   tags          = var.tags
@@ -105,6 +117,8 @@ resource "aws_s3_bucket" "this" {
 }
 
 resource "aws_s3_bucket_policy" "this" {
+  count = var.create_alb ? 1 : 0
+
   bucket = aws_s3_bucket.this.id
   policy = data.aws_iam_policy_document.s3.json
 }
@@ -124,6 +138,8 @@ data "aws_iam_policy_document" "s3" {
 }
 
 resource "aws_security_group" "alb" {
+  count = var.create_alb ? 1 : 0
+
   name_prefix = "${var.id}-alb-"
   vpc_id      = var.vpc_id
   tags        = var.tags
@@ -134,31 +150,37 @@ resource "aws_security_group" "alb" {
 }
 
 resource "aws_security_group_rule" "alb_egress_ecs" {
+  count = var.create_alb ? 1 : 0
+
   description              = "ECS"
   type                     = "egress"
   from_port                = 0
   to_port                  = 0
   protocol                 = "-1"
-  security_group_id        = aws_security_group.alb.id
+  security_group_id        = aws_security_group.alb[0].id
   source_security_group_id = aws_security_group.ecs.id
 }
 
 resource "aws_security_group_rule" "alb_ingress_http" {
+  count = var.create_alb ? 1 : 0
+
   description       = "Internet"
   type              = "ingress"
   from_port         = 80
   to_port           = 80
   protocol          = "tcp"
-  security_group_id = aws_security_group.alb.id
+  security_group_id = aws_security_group.alb[0].id
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
 resource "aws_security_group_rule" "alb_ingress_https" {
+  count = var.create_alb ? 1 : 0
+
   description       = "Internet"
   type              = "ingress"
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
-  security_group_id = aws_security_group.alb.id
+  security_group_id = aws_security_group.alb[0].id
   cidr_blocks       = ["0.0.0.0/0"]
 }
