@@ -39,7 +39,7 @@ resource "aws_ecs_service" "this" {
   desired_count                     = var.desired_count
   launch_type                       = "FARGATE"
   propagate_tags                    = "SERVICE"
-  health_check_grace_period_seconds = 30
+  health_check_grace_period_seconds = 600
   depends_on                        = [aws_lb_listener_rule.this]
   tags                              = var.tags
 
