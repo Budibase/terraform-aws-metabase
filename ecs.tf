@@ -93,6 +93,10 @@ locals {
 
   environment = [
     {
+      name  = "MB_JETTY_HOST"
+      value = "0.0.0.0"
+    },
+    {
       name  = "JAVA_TIMEZONE"
       value = var.java_timezone
     },
