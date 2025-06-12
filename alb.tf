@@ -18,7 +18,7 @@ resource "aws_lb" "this" {
 
 resource "aws_lb_listener" "http" {
   load_balancer_arn = var.existing_alb_arn != "" ? var.existing_alb_arn : aws_lb.this[0].arn
-  depends_on        = [aws_lb.this] # https://github.com/terraform-providers/terraform-provider-aws/issues/9976
+  depends_on        = var.create_alb ? [aws_lb.this[0]] : [] # https://github.com/terraform-providers/terraform-provider-aws/issues/9976
   port              = "80"
   protocol          = "HTTP"
 
