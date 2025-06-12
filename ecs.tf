@@ -34,7 +34,7 @@ resource "aws_ecs_task_definition" "this" {
 
 resource "aws_ecs_service" "this" {
   name                              = var.id
-  cluster                           = data.aws_ecs_cluster.this[0].id
+  cluster                           = var.create_cluster ? aws_ecs_cluster.this[0].id : data.aws_ecs_cluster.this[0].id
   task_definition                   = aws_ecs_task_definition.this.arn
   desired_count                     = var.desired_count
   launch_type                       = "FARGATE"
@@ -44,7 +44,7 @@ resource "aws_ecs_service" "this" {
   tags                              = var.tags
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.this.id
+    target_group_arn = aws_lb_target_group.this.arn
     container_name   = local.container[0].name
     container_port   = local.container[0].portMappings[0].containerPort
   }
@@ -165,6 +165,18 @@ resource "aws_lb_target_group" "this" {
   vpc_id      = var.vpc_id
   target_type = "ip"
   tags        = var.tags
+
+  health_check {
+    enabled             = true
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 5
+    interval            = 30
+    path                = "/api/health"
+    matcher             = "200"
+    port                = "traffic-port"
+    protocol            = "HTTP"
+  }
 }
 
 resource "aws_lb_listener_rule" "this" {
