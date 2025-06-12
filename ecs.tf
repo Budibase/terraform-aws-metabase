@@ -161,12 +161,6 @@ resource "aws_lb_target_group" "this" {
   vpc_id      = var.vpc_id
   target_type = "ip"
   tags        = var.tags
-
-  health_check {
-    path     = "/api/health"
-    timeout  = 10
-    interval = 120
-  }
 }
 
 resource "aws_lb_listener_rule" "this" {
