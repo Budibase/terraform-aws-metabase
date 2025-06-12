@@ -8,6 +8,16 @@ variable "cluster_name" {
   default     = "metabase"
 }
 
+variable "create_alb" { 
+  description = "(Optional) Create an ALB"
+  default     = true
+}
+
+variable "existing_alb_arn" {
+  description = "(Optional) ARN of an existing ALB to use"
+  default     = ""
+}
+
 variable "private_subnet_ids" {
   description = "(Required) IDs of the subnets to which the services and database will be deployed"
 }
